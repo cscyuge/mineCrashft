@@ -1,31 +1,41 @@
 package main;
 
+import org.lwjgl.glfw.GLFW;
+
+import engine.io.Input;
+import engine.io.Window;
+
 public class Main implements Runnable {
     public Thread game;
-
+    public static Window window;
+    public static final int WIDTH = 1280,HEIGHT = 760;
+    
     public void start() {
         game = new Thread(this, "game");
         game.start();
     }
 
     public static void init() {
-        System.out.println("hello");
+        window =new Window(WIDTH,HEIGHT,"Game");
+        window.create();
     }
 
     public void update() {
-        System.out.println("updating");
+        window.update();
     }
 
     public void render() {
-        System.out.println("ring");
+        window.swapBuffers();
     }
 
     public void run() {
         init();
-        while (true) {
+        while (!window.shouldClose()) {
             update();
             render();
+            if (Input.isKeyDown(GLFW.GLFW_KEY_ESCAPE)) break;
         }
+        window.destory();
     }
 
     public static void main(String args[]) {
